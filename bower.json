@@ -1,0 +1,17 @@
+{
+  "name": "adapt-dragAndDrop",
+  "version": "1.0.0",
+  "homepage": "https://github.com/BATraining/adapt-dragAndDrop",
+  "authors": [
+    "Himanshu Rajotia <himanshu.rajotia@exultcorp.com>"
+  ],
+  "displayName" : "Drag And Drop",
+  "component" : "dragAndDrop",
+  "description": "A basic Adapt drag and drop component.",
+  "main": "/js/adapt-dragAndDrop.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-component"
+  ],
+  "license": "GPLv3"
+}

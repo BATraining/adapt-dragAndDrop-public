@@ -1,0 +1,25 @@
+{{! Maintainers - Himanshu Rajotia <himanshu.rajotia@exultcorp.com>}}
+<div class="dragAndDrop-inner component-inner" role="region">
+    {{> component this}}
+    <div class="dragAndDrop-widget component-widget {{#unless _isEnabled}} disabled {{#if _isComplete}} complete submitted show-user-answer {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
+        <div class="dragAndDrop-draggables-container">
+            {{#each _draggableItems}}
+            <div class="dragAndDrop-item-draggable-wrapper" style="width:{{../_defaultWidth}}px; height:{{../_defaultHeight}}px;">
+                <a href="#" class="dragAndDrop-item-draggable component-item component-item-color item-{{@index}}" data-id="{{id}}">
+                    {{{body}}}
+                </a>
+            </div>
+            {{/each}}
+        </div>
+        <div class="dragAndDrop-droppables-container">
+            {{#each _droppableItems}}
+            <div class="dragAndDrop-item-droppable {{#unless ../_isEnabled}} {{#if _isCorrect}} correct{{else}} incorrect{{/if}} {{/unless}}" style="width:{{../_defaultWidth}}px; height:{{../_defaultHeight}}px;" data-id="{{id}}">
+                {{{body}}}
+            </div>
+            {{/each}}
+        </div>
+        <div class="dragAndDrop-dummy display-none" style="width:{{_defaultWidth}}px; height:{{_defaultHeight}}px;"></div>
+    </div>
+    <div class="buttons">
+    </div>
+</div>

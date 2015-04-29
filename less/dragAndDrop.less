@@ -1,0 +1,85 @@
+.dragAndDrop-component {
+  .dragAndDrop-inner {
+    .dragAndDrop-draggables-container {
+      display: inline-block;
+      width: 49%;
+      vertical-align: top;
+
+      .dragAndDrop-item-draggable-wrapper {
+        display: block;
+        border-style: dashed;
+        border-width: thin;
+        margin: 0 auto 2px;
+      }
+    }
+
+    .dragAndDrop-droppables-container {
+      display: inline-block;
+      width: 49%;
+      vertical-align: top;
+
+      .dragAndDrop-item-droppable {
+        display: block;
+        border-style: dashed;
+        border-width: thin;
+        margin: 0 auto 2px;
+      }
+    }
+
+    .dragAndDrop-item-draggable {
+      display: block;
+      width: inherit;
+      height: inherit;
+      text-decoration: none;
+      color: #000000;
+
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      -ms-user-select:none;
+      -o-user-select:none;
+      user-select:none;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .dragAndDrop-dummy {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      cursor: pointer;
+    }
+  }
+
+  .dragAndDrop-widget {
+
+    &.show-user-answer {
+      .incorrect {
+        border-style: solid;
+        border-color: #FF0000;
+      }
+      .correct {
+        border-style: solid;
+        border-color: #00FF00;
+      }
+    }
+
+    &.show-correct-answer {
+      .dragAndDrop-item-droppable {
+        border-style: solid;
+        border-color: #00FF00;
+      }
+    }
+
+    &.disabled {
+      .dragAndDrop-item-draggable {
+        &:hover {
+          cursor: default;
+        }
+      }
+    }
+  }
+}
