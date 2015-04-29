@@ -1,0 +1,98 @@
+{
+  "_id":"c-150",
+  "_parentId":"b-85",
+  "_type":"component",
+  "_component":"dragAndDrop",
+  "_classes":"",
+  "_attempts": 2,
+  "_questionWeight": 1,
+  "_isRandom": true,
+  "title": "Basic Drag and Drop Component",
+  "displayTitle": "Basic Drag and Drop Component",
+  "body": "This is a basic drag and drop question component.",
+  "instruction": "",
+  "_defaultWidth": 120,
+  "_defaultHeight": 120,
+  "_draggableItems": [
+    {
+      "id": "drag-01",
+      "body": "<img src='course/en/images/number1.jpg'>"
+    },
+    {
+      "id": "drag-02",
+      "body": "<img src='course/en/images/number2.jpg'>"
+    },
+    {
+      "id": "drag-03",
+      "body": "<img src='course/en/images/number3.jpg'>"
+    }
+  ],
+  "_droppableItems": [
+    {
+      "id": "drop-01",
+      "body": "First",
+      "correctItemId": "drag-01"
+    },
+    {
+      "id": "drop-02",
+      "body": "Second",
+      "correctItemId": "drag-02"
+    },
+    {
+      "id": "drop-03",
+      "body": "Three",
+      "correctItemId": "drag-03"
+    }
+  ],
+  "_feedback": {
+    "correct": {
+      "title": "Congratulations!",
+      "body": "This is my long feedback"
+    },
+    "_incorrect": {
+      "notFinal": {
+        "title": "Incorrect!  Try again."
+      },
+      "final": {
+        "title": "Incorrect!  No more tries."
+      }
+    },
+    "_partlyCorrect": {
+      "notFinal": {
+        "title": "Partially correct!  Try again."
+      },
+      "final": {
+        "title": "Partially correct!  No more tries."
+      }
+    },
+    "body": "This should show for final incorrect and final partially correct, but it shouldn't for correct because correct has its own body attribute defined or not blank.."
+  },
+  "_buttons": {
+    "_submit": {
+      "buttonText": "Submit",
+      "ariaLabel": "Select here to submit your answer."
+    },
+    "_reset": {
+      "buttonText": "Reset",
+      "ariaLabel": ""
+    },
+    "_showCorrectAnswer": {
+      "buttonText": "Correct Answer",
+      "ariaLabel": ""
+    },
+    "_hideCorrectAnswer": {
+      "buttonText": "My Answer",
+      "ariaLabel": ""
+    },
+    "_showFeedback": {
+      "buttonText": "Show feedback",
+      "ariaLabel": ""
+    },
+    "remainingAttemptsText": "attempts remaining",
+    "remainingAttemptText": "final attempt",
+    "disabledAriaLabel": "This button is disabled at the moment"
+  },
+  "_pageLevelProgress": {
+    "_isEnabled": true
+  }
+}
