@@ -4,6 +4,7 @@
   "_type":"component",
   "_component":"dragAndDrop",
   "_classes":"",
+  "_layout":"full",
   "_attempts": 2,
   "_questionWeight": 1,
   "_isRandom": true,
@@ -11,7 +12,7 @@
   "displayTitle": "Basic Drag and Drop Component",
   "body": "This is a basic drag and drop question component.",
   "instruction": "",
-  "_defaultWidth": 120,
+  "_defaultMaxWidth": 120,
   "_defaultHeight": 120,
   "_draggableItems": [
     {
