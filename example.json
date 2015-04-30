@@ -4,6 +4,7 @@
   "_type":"component",
   "_component":"dragAndDrop",
   "_classes":"",
+  "_layout":"full",
   "_attempts": 2,
   "_questionWeight": 1,
   "_isRandom": true,

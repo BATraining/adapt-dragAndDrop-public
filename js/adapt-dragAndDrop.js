@@ -10,6 +10,18 @@ define(function(require) {
 
     var DragAndDrop = QuestionView.extend({
 
+        initialize: function() {
+            this.listenTo(Adapt, 'remove', this.remove);
+            this.listenTo(this.model, 'change:_isVisible', this.toggleVisibility);
+            this.model.set('_globals', Adapt.course.get('_globals'));
+            this.preRender();
+            if (Adapt.device.screenSize == 'large') {
+                this.render();
+            } else {
+                this.reRender();
+            }
+        },
+
         events: function() {
             if (Modernizr.touch) {
                 return {
@@ -29,6 +41,8 @@ define(function(require) {
         },
 
         setupQuestion: function() {
+            this.listenTo(Adapt, 'device:changed', this.reRender, this);
+
             // Check if items need to be randomised
             if (this.model.get('_isRandom') && this.model.get('_isEnabled')) {
                 this.model.set('_draggableItems', _.shuffle(this.model.get('_draggableItems')));
@@ -48,7 +62,37 @@ define(function(require) {
                 this.setReadyStatus();
             }
 
-            this.model.set('_initialWidgetView', this.$('.dragAndDrop-widget').html());
+            this.model.set('_initialDragAndDropWidgetView', this.$('.dragAndDrop-widget').html());
+        },
+
+        reRender: function() {
+            if (Adapt.device.screenSize != 'large') {
+                this.replaceWithObjectMatching();
+            }
+        },
+
+        replaceWithObjectMatching: function() {
+            if (!Adapt.componentStore.objectMatching) throw "Object Matching not included in build";
+            var ObjectMatching = Adapt.componentStore.objectMatching;
+
+            var model = this.prepareObjectMatchingModel();
+            var newObjectMatching = new ObjectMatching({model: model, $parent: this.options.$parent});
+            newObjectMatching.reRender();
+            if(model.get('_initialObjectMatchingWidgetView')) {
+                newObjectMatching.$el.find('.objectMatching-widget').html(model.get('_initialObjectMatchingWidgetView'));
+            }
+            newObjectMatching.setupObjectMatching();
+            this.options.$parent.append(newObjectMatching.$el);
+            Adapt.trigger('device:resize');
+            this.remove();
+        },
+
+        prepareObjectMatchingModel: function() {
+            var model = this.model;
+            model.set('_component', 'objectMatching');
+            model.set('_wasDragAndDrop', true);
+
+            return model;
         },
 
         onClickDragItem: function(event) {
@@ -353,7 +397,7 @@ define(function(require) {
                 item._isCorrect = false;
             });
 
-            this.$('.dragAndDrop-widget').html(this.model.get('_initialWidgetView'));
+            this.$('.dragAndDrop-widget').html(this.model.get('_initialDragAndDropWidgetView'));
 
             this.model.set({
                 _currentWidth: 0,
