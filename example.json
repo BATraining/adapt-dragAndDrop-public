@@ -11,7 +11,7 @@
   "displayTitle": "Basic Drag and Drop Component",
   "body": "This is a basic drag and drop question component.",
   "instruction": "",
-  "_defaultWidth": 120,
+  "_defaultMaxWidth": 120,
   "_defaultHeight": 120,
   "_draggableItems": [
     {

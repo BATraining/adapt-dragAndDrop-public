@@ -69,11 +69,14 @@ define(function(require) {
             }
             $('body').on('mousemove', _.bind(this.onMouseMoveDragItem, this));
 
-            var currentDragedItemId = this.$(event.currentTarget).attr('data-id');
+            var $currentItem = this.$(event.currentTarget);
+            var currentDragedItemId = $currentItem.attr('data-id');
             if(currentDragedItemId) {
                 this.model.set('_currentDragedItemId', currentDragedItemId);
+                this.model.set('_currentWidth', $currentItem.parent('div').width());
 
                 this.$('.dragAndDrop-dummy')
+                    .width(this.model.get('_currentWidth'))
                     .html(this.$('[data-id=' + currentDragedItemId + ']').html());
             }
 
@@ -93,7 +96,7 @@ define(function(require) {
                 posy = event.clientY;
             }
 
-            posx -= (this.model.get('_defaultWidth') / 2);
+            posx -= (this.model.get('_currentWidth') / 2);
             posy -= (this.model.get('_defaultHeight') / 2);
 
             var $dragAndDropDummy = this.$('.dragAndDrop-dummy');
@@ -143,11 +146,14 @@ define(function(require) {
                 .on('touchend', _.bind(this.onTouchEndItem, this))
                 .on('touchcancel', _.bind(this.onTouchCancelItem, this));
 
-            var currentDragedItemId = this.$(event.currentTarget).attr('data-id');
+            var $currentItem = this.$(event.currentTarget);
+            var currentDragedItemId = $currentItem.attr('data-id');
             if(currentDragedItemId) {
                 this.model.set('_currentDragedItemId', currentDragedItemId);
+                this.model.set('_currentWidth', $currentItem.parent('div').width());
 
                 this.$('.dragAndDrop-dummy')
+                    .width(this.model.get('_currentWidth'))
                     .html(this.$('[data-id=' + currentDragedItemId + ']').html());
             }
 
@@ -167,7 +173,7 @@ define(function(require) {
                 '_lastLeft': event.originalEvent.touches[0].pageX
             })
 
-            posx = posx - (this.model.get('_defaultWidth') / 2);
+            posx = posx - (this.model.get('_currentWidth') / 2);
             posy = posy - (this.model.get('_defaultHeight') / 2);
 
             var $dragAndDropDummy = this.$('.dragAndDrop-dummy');
@@ -213,7 +219,7 @@ define(function(require) {
         },
 
         getDropedItemIdForCoordinate: function(top, left) {
-            var defaultWidth = this.model.get('_defaultWidth');
+            var defaultWidth = this.model.get('_currentWidth');
             var defaultHeight = this.model.get('_defaultHeight');
             var droppedItemId;
 
@@ -350,6 +356,7 @@ define(function(require) {
             this.$('.dragAndDrop-widget').html(this.model.get('_initialWidgetView'));
 
             this.model.set({
+                _currentWidth: 0,
                 _currentDragedItemId: '',
                 _isAtLeastOneCorrectSelection: false
             });
