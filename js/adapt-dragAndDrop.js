@@ -198,7 +198,7 @@ define(function(require) {
                 return false;
             }
 
-            $('.dragAndDrop-widget')
+            this.$('.dragAndDrop-widget')
                 .on('touchmove', _.bind(this.onTouchMoveItem, this))
                 .on('touchend', _.bind(this.onTouchEndItem, this))
                 .on('touchcancel', _.bind(this.onTouchCancelItem, this));
@@ -264,7 +264,7 @@ define(function(require) {
             this.model.unset('_lastTop');
             this.model.unset('_lastLeft');
 
-            $('.dragAndDrop-widget').off('touchmove touchend touchcancel');
+            this.$('.dragAndDrop-widget').off('touchmove touchend touchcancel');
         },
 
         onTouchCancelItem: function(event) {
@@ -272,7 +272,7 @@ define(function(require) {
             this.model.set('_currentDragedItemId', '');
             this.model.unset('_lastTop');
             this.model.unset('_lastLeft');
-            $('.dragAndDrop-widget').off('touchmove touchend touchcancel');
+            this.$('.dragAndDrop-widget').off('touchmove touchend touchcancel');
         },
 
         getDropedItemIdForCoordinate: function(top, left) {
