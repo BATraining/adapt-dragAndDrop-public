@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-define(function(require) {
-
-    var QuestionView = require('coreViews/questionView');
-    var Adapt = require('coreJS/adapt');
+define([
+  'coreJS/adapt',
+  'coreViews/questionView'
+], function(Adapt, QuestionView) {
 
     var DragAndDrop = QuestionView.extend({
 
@@ -38,13 +38,13 @@ define(function(require) {
         events: function() {
             if (Modernizr.touch) {
                 return {
-                    'click .dragAndDrop-item-draggable': 'onClickDragItem',
-                    'touchstart .dragAndDrop-item-draggable': 'onTouchStartItem'
+                    'click .draggable-item': 'onClickDragItem',
+                    'touchstart .draggable-item': 'onTouchStartItem'
                 };
             } else {
                 return {
-                    'click .dragAndDrop-item-draggable': 'onClickDragItem',
-                    'mousedown .dragAndDrop-item-draggable': 'onMouseDownDragItem'
+                    'click .draggable-item': 'onClickDragItem',
+                    'mousedown .draggable-item': 'onMouseDownDragItem'
                 };
             }
         },
@@ -56,7 +56,12 @@ define(function(require) {
         setupQuestion: function() {
             this.listenTo(Adapt, 'device:changed', this.reRender, this);
 
-            // Check if items need to be randomised
+            this.setupRandomisation();
+
+            this.addTitleToDraggables();
+        },
+
+         setupRandomisation: function() {
             if (this.model.get('_isRandom') && this.model.get('_isEnabled')) {
                 this.model.set('_draggableItems', _.shuffle(this.model.get('_draggableItems')));
             }
@@ -66,8 +71,18 @@ define(function(require) {
             }
         },
 
+        addTitleToDraggables: function() {
+            var i = 65;
+            _.each(this.model.get('_draggableItems'), function(item, index) {
+                if(!item.title) {
+                    item.title = String.fromCharCode(i);
+                }
+                i++;
+            }, this);
+        },
+
         onQuestionRendered: function() {
-            if (this.$('.dragAndDrop-widget').find('img').length > 0) {
+            if (this.$('.dragAndDrop-widget').find('img').length !== 0) {
                 this.$('.dragAndDrop-widget').imageready(_.bind(function() {
                     this.setReadyStatus();
                 }, this));
@@ -88,16 +103,21 @@ define(function(require) {
             if (!Adapt.componentStore.objectMatching) throw "Object Matching not included in build";
             var ObjectMatching = Adapt.componentStore.objectMatching;
 
+            var $container = $(".component-container", $("." + this.model.get("_parentId")));
             var model = this.prepareObjectMatchingModel();
-            var newObjectMatching = new ObjectMatching({model: model, $parent: this.options.$parent});
+            var newObjectMatching = new ObjectMatching({model: model});
             newObjectMatching.reRender();
-            if(model.get('_initialObjectMatchingWidgetView')) {
+            if (model.get('_initialObjectMatchingWidgetView')) {
                 newObjectMatching.$el.find('.objectMatching-widget').html(model.get('_initialObjectMatchingWidgetView'));
             }
             newObjectMatching.setupObjectMatching();
-            this.options.$parent.append(newObjectMatching.$el);
+            $container.append(newObjectMatching.$el);
             Adapt.trigger('device:resize');
-            this.remove();
+
+            _.defer(_.bind(function() {
+                this.remove();
+            }, this));
+            //this.remove();
         },
 
         prepareObjectMatchingModel: function() {
@@ -109,17 +129,17 @@ define(function(require) {
         },
 
         onClickDragItem: function(event) {
-            if (event && event.preventDefault) event.preventDefault();
+            event && event.preventDefault();
         },
 
         // Mouse Events
         onMouseDownDragItem: function(event) {
-            if (!this.model.get('_isEnabled'))  {
-                if(event && event.preventDefault) event.preventDefault();
+            if (!this.model.get('_isEnabled')) {
+                event && event.preventDefault();
                 return false;
             }
 
-            if($('html').hasClass('ie8')) {
+            if ($('html').hasClass('ie8')) {
                 $(document).on('mouseup', _.bind(this.onMouseUpDragItem, this));
             } else {
                 $(window).on('mouseup', _.bind(this.onMouseUpDragItem, this));
@@ -128,7 +148,7 @@ define(function(require) {
 
             var $currentItem = this.$(event.currentTarget);
             var currentDragedItemId = $currentItem.attr('data-id');
-            if(currentDragedItemId) {
+            if (currentDragedItemId) {
                 this.model.set('_currentDragedItemId', currentDragedItemId);
                 this.model.set('_currentWidth', $currentItem.parent('div').width());
 
@@ -145,7 +165,8 @@ define(function(require) {
                 return false;
             }
 
-            var posx = 0, posy = 0;
+            var posx = 0,
+                posy = 0;
             if (!event) event = window.event;
 
             if (event.clientX || event.clientY) {
@@ -157,24 +178,24 @@ define(function(require) {
             posy -= (this.model.get('_defaultHeight') / 2);
 
             var $dragAndDropDummy = this.$('.dragAndDrop-dummy');
-            if($dragAndDropDummy.hasClass('display-none')) {
+            if ($dragAndDropDummy.hasClass('display-none')) {
                 $dragAndDropDummy.removeClass('display-none');
             }
 
             $dragAndDropDummy.css({
-                    top: posy,
-                    left: posx
-                });
+                top: posy,
+                left: posx
+            });
         },
 
         onMouseUpDragItem: function(event) {
             if (!this.model.get('_isEnabled')) {
-                if (event && event.preventDefault) event.preventDefault();
+                event && event.preventDefault();
                 return false;
             }
 
             this.$('.dragAndDrop-dummy').html('').addClass('display-none');
-            if($('html').hasClass('ie8')) {
+            if ($('html').hasClass('ie8')) {
                 $(document).off('mouseup');
             } else {
                 $(window).off('mouseup');
@@ -184,7 +205,7 @@ define(function(require) {
             var currentDragedItemId = this.model.get('_currentDragedItemId');
             var droppableItemId = this.getDropedItemIdForCoordinate(event.pageY, event.pageX);
 
-            if(currentDragedItemId && droppableItemId) {
+            if (currentDragedItemId && droppableItemId) {
                 this.putDraggableItem(this.model.get('_currentDragedItemId'), droppableItemId);
             }
 
@@ -194,18 +215,18 @@ define(function(require) {
         // Touch Events
         onTouchStartItem: function(event) {
             if (!this.model.get('_isEnabled')) {
-                if (event && event.preventDefault) event.preventDefault();
+                event && event.preventDefault();
                 return false;
             }
 
-            $('.dragAndDrop-widget')
+            this.$('.dragAndDrop-widget')
                 .on('touchmove', _.bind(this.onTouchMoveItem, this))
                 .on('touchend', _.bind(this.onTouchEndItem, this))
                 .on('touchcancel', _.bind(this.onTouchCancelItem, this));
 
             var $currentItem = this.$(event.currentTarget);
             var currentDragedItemId = $currentItem.attr('data-id');
-            if(currentDragedItemId) {
+            if (currentDragedItemId) {
                 this.model.set('_currentDragedItemId', currentDragedItemId);
                 this.model.set('_currentWidth', $currentItem.parent('div').width());
 
@@ -234,14 +255,14 @@ define(function(require) {
             posy = posy - (this.model.get('_defaultHeight') / 2);
 
             var $dragAndDropDummy = this.$('.dragAndDrop-dummy');
-            if($dragAndDropDummy.hasClass('display-none')) {
+            if ($dragAndDropDummy.hasClass('display-none')) {
                 $dragAndDropDummy.removeClass('display-none');
             }
 
             $dragAndDropDummy.css({
-                    top: posy,
-                    left: posx
-                });
+                top: posy,
+                left: posx
+            });
         },
 
         onTouchEndItem: function(event) {
@@ -249,14 +270,14 @@ define(function(require) {
             var lastTop = this.model.get('_lastTop');
             var lastLeft = this.model.get('_lastLeft');
             if (!this.model.get('_isEnabled') || !currentDragedItemId || !lastTop || !lastLeft) {
-                if (event && event.preventDefault) event.preventDefault();
+                event && event.preventDefault();
                 return false;
             }
 
             this.$('.dragAndDrop-dummy').html('').addClass('display-none');
 
             var droppableItemId = this.getDropedItemIdForCoordinate(lastTop, lastLeft);
-            if(currentDragedItemId && droppableItemId) {
+            if (currentDragedItemId && droppableItemId) {
                 this.putDraggableItem(this.model.get('_currentDragedItemId'), droppableItemId);
             }
 
@@ -264,7 +285,7 @@ define(function(require) {
             this.model.unset('_lastTop');
             this.model.unset('_lastLeft');
 
-            $('.dragAndDrop-widget').off('touchmove touchend touchcancel');
+            this.$('.dragAndDrop-widget').off('touchmove touchend touchcancel');
         },
 
         onTouchCancelItem: function(event) {
@@ -272,7 +293,7 @@ define(function(require) {
             this.model.set('_currentDragedItemId', '');
             this.model.unset('_lastTop');
             this.model.unset('_lastLeft');
-            $('.dragAndDrop-widget').off('touchmove touchend touchcancel');
+            this.$('.dragAndDrop-widget').off('touchmove touchend touchcancel');
         },
 
         getDropedItemIdForCoordinate: function(top, left) {
@@ -280,14 +301,15 @@ define(function(require) {
             var defaultHeight = this.model.get('_defaultHeight');
             var droppedItemId;
 
-            _.each(this.$('.dragAndDrop-item-droppable '), function(item, index) {
-                var itemTop = $(item).offset().top;
-                var itemLeft = $(item).offset().left;
+            _.each(this.$('.droppable-item '), function(item, index) {
+                var $item =$(item);
+                var itemTop = $item.offset().top;
+                var itemLeft = $item.offset().left;
                 var itemBottom = itemTop + defaultHeight;
                 var itemRight = itemLeft + defaultWidth;
 
-                if((top > itemTop && top < itemBottom) && (left > itemLeft && left < itemRight)) {
-                    droppedItemId = $(item).attr('data-id');
+                if ((top > itemTop && top < itemBottom) && (left > itemLeft && left < itemRight)) {
+                    droppedItemId = $item.attr('data-id');
                 }
             });
 
@@ -302,24 +324,24 @@ define(function(require) {
             var $currentDropContainer = this.$('[data-id=' + droppableItemId + ']');
             var $currentDragedItem = this.$('[data-id=' + currentDragedItemId + ']');
             var $currentDragedItemContainer = $currentDragedItem.closest('div');
-            var $existingDragItem = $currentDropContainer.find('.dragAndDrop-item-draggable');
+            var $existingDragItem = $currentDropContainer.find('.draggable-item');
             var existingDragItemId = $existingDragItem.attr('data-id');
 
             if (currentDragedItemId == existingDragItemId) return;
 
-            var currentDropIndex = $currentDropContainer.index();
-            var currentDragIndex = $currentDragedItemContainer.index();
+            var currentDropIndex = $currentDropContainer.attr('index');
+            var currentDragIndex = $currentDragedItemContainer.attr('index');
             var droppableItems = this.model.get('_droppableItems');
 
             if ($existingDragItem.length > 0) {
-                if ($currentDragedItemContainer.hasClass('dragAndDrop-item-draggable-wrapper')) {
+                if ($currentDragedItemContainer.hasClass('draggable-item-wrapper')) {
                     $currentDragedItemContainer.html($existingDragItem);
                     delete droppableItems[currentDropIndex]['_selectedItemId'];
-                } else if ($currentDragedItemContainer.hasClass('dragAndDrop-item-droppable')) {
+                } else if ($currentDragedItemContainer.hasClass('droppable-item')) {
                     $currentDragedItemContainer.html($existingDragItem);
                     droppableItems[currentDragIndex]._selectedItemId = existingDragItemId;
                 }
-            } else if ($currentDragedItemContainer.hasClass('dragAndDrop-item-droppable')) {
+            } else if ($currentDragedItemContainer.hasClass('droppable-item')) {
                 $currentDragedItemContainer.html(droppableItems[currentDragIndex].body);
                 delete droppableItems[currentDragIndex]['_selectedItemId'];
             }
@@ -336,7 +358,6 @@ define(function(require) {
                     count++;
                 }
             });
-
             return (count == this.model.get('_droppableItems').length);
         },
 
@@ -390,7 +411,7 @@ define(function(require) {
         showMarking: function() {
             _.each(this.model.get('_droppableItems'), function(item, i) {
 
-                var $item = this.$('.dragAndDrop-item-droppable').eq(i);
+                var $item = this.$('.droppable-item').eq(i);
                 $item.addClass(item._isCorrect ? 'correct' : 'incorrect');
 
             }, this);
@@ -426,10 +447,10 @@ define(function(require) {
         },
 
         setdroppableItems: function(droppableContainerIndex, draggableItemId) {
-            var $droppableItemContainer = this.$('.dragAndDrop-item-droppable').eq(droppableContainerIndex);
-            var $draggableItem = this.$('.dragAndDrop-item-draggable[data-id=' + draggableItemId + ']');
+            var $droppableItemContainer = this.$('.droppable-item').eq(droppableContainerIndex);
+            var $draggableItem = this.$('.draggable-item[data-id=' + draggableItemId + ']');
 
-            var $existingDragItem = $droppableItemContainer.find('.dragAndDrop-item-draggable');
+            var $existingDragItem = $droppableItemContainer.find('.draggable-item');
             if ($existingDragItem.length > 0) {
                 $draggableItem.closest('div').html($existingDragItem);
             }

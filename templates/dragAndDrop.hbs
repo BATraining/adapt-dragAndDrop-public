@@ -2,40 +2,62 @@
     adapt-dragAndDrop
     Copyright (C) 2015 Bombardier Inc. (www.batraining.com)
     https://github.com/BATraining/adapt-dragAndDrop/blob/master/LICENSE
-   
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-   
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-   
+
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --}}
-<div class="dragAndDrop-inner component-inner" role="region">
+<div class="dragAndDrop-inner component-inner" role="region" aria-label="{{_globals._components._dragAndDrop.ariaRegion}}" {{#if _globals._components._dragAndDrop.ariaRegion}}tabindex="0"{{/if}}>
     {{> component this}}
-    <div class="dragAndDrop-widget component-widget {{#unless _isEnabled}} disabled {{#if _isComplete}} complete submitted show-user-answer {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
-        <div class="dragAndDrop-draggables-container">
+    <div class="dragAndDrop-widget component-widget {{#unless _isEnabled}} disabled {{#if _isInteractionComplete}} complete submitted show-user-answer {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
+        <div class="draggables-container">
             {{#each _draggableItems}}
-            <div class="dragAndDrop-item-draggable-wrapper" style="max-width:{{../_defaultMaxWidth}}px; height:{{../_defaultHeight}}px;">
-                <a href="#" class="dragAndDrop-item-draggable component-item component-item-color item-{{@index}}" data-id="{{id}}">
-                    {{{body}}}
-                </a>
+            <div class="draggable-item-container">
+                {{#if title}}
+                <div class="draggable-item-title">
+                    <div class="draggable-item-title-inner">
+                        {{{title}}}
+                    </div>
+                </div>
+                {{/if}}
+                <div class="draggable-item-wrapper" style="width:{{../_defaultWidth}}px; height:{{../_defaultHeight}}px;" >
+                    <a href="#" class="draggable-item component-item component-item-color item-{{@index}}" data-id="{{id}}" index={{@index}}>
+                        <div class="draggable-item-body">
+                            {{{body}}}
+                        </div>
+                    </a>
+                </div>
             </div>
             {{/each}}
         </div>
-        <div class="dragAndDrop-droppables-container">
+        <div class="droppables-container">
             {{#each _droppableItems}}
-            <div class="dragAndDrop-item-droppable {{#unless ../_isEnabled}} {{#if _isCorrect}} correct{{else}} incorrect{{/if}} {{/unless}}" style="max-width:{{../_defaultMaxWidth}}px; height:{{../_defaultHeight}}px;" data-id="{{id}}">
-                {{{body}}}
+            <div class="droppable-item-container">
+                {{#if title}}
+                <div class="droppable-item-title">
+                    <div class="droppable-item-title-inner">
+                        {{{title}}}
+                    </div>
+                </div>
+                {{/if}}
+                <div class="droppable-item {{#unless ../_isEnabled}} {{#if _isCorrect}} correct{{else}} incorrect{{/if}} {{/unless}}" style="width:{{../_defaultWidth}}px; height:{{../_defaultHeight}}px;" data-id="{{id}}" index={{@index}}>
+                    <div class="droppable-item-body">
+                        {{{body}}}
+                    </div>
+                </div>
             </div>
             {{/each}}
         </div>
-        <div class="dragAndDrop-dummy display-none" style="max-width:{{_defaultMaxWidth}}px; height:{{_defaultHeight}}px;"></div>
+        <div class="dragAndDrop-dummy display-none" style="width:{{_defaultWidth}}px; height:{{_defaultHeight}}px;"></div>
     </div>
     <div class="buttons">
     </div>

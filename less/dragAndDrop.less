@@ -17,87 +17,126 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 .dragAndDrop-component {
-  .dragAndDrop-inner {
-    .dragAndDrop-draggables-container {
-      display: inline-block;
-      width: 49%;
-      vertical-align: top;
+    .dragAndDrop-inner {
+        .draggables-container {
+            display: inline-block;
+            vertical-align: top;
 
-      .dragAndDrop-item-draggable-wrapper {
-        display: block;
-        border-style: dashed;
-        border-width: thin;
-        margin: 0 auto 2px;
-      }
-    }
+            .draggable-item-container {
+                position: relative;
+                float: left;
 
-    .dragAndDrop-droppables-container {
-      display: inline-block;
-      width: 49%;
-      vertical-align: top;
+                .draggable-item-title {
+                    font-size: 20px;
+                    font-weight: 600;
+                    line-height: 35px;
+                    height: 35px;
+                    margin: 0 0 5px 5px;
+                    padding: 5px 0 5px 0;
+                    text-align: center;
+                    border: 1px solid #dcddde;
+                    background-color: @white;
+                    font-color: #102a3e;
+                }
 
-      .dragAndDrop-item-droppable {
-        display: block;
-        border-style: dashed;
-        border-width: thin;
-        margin: 0 auto 2px;
-      }
-    }
-
-    .dragAndDrop-item-draggable {
-      display: block;
-      width: inherit;
-      height: inherit;
-      text-decoration: none;
-      color: #000000;
-
-      -webkit-user-select:none;
-      -moz-user-select:none;
-      -ms-user-select:none;
-      -o-user-select:none;
-      user-select:none;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    .dragAndDrop-dummy {
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      cursor: pointer;
-    }
-  }
-
-  .dragAndDrop-widget {
-
-    &.show-user-answer {
-      .incorrect {
-        border-style: solid;
-        border-color: #FF0000;
-      }
-      .correct {
-        border-style: solid;
-        border-color: #00FF00;
-      }
-    }
-
-    &.show-correct-answer {
-      .dragAndDrop-item-droppable {
-        border-style: solid;
-        border-color: #00FF00;
-      }
-    }
-
-    &.disabled {
-      .dragAndDrop-item-draggable {
-        &:hover {
-          cursor: default;
+                .draggable-item-wrapper {
+                    position: relative;
+                    display: block;
+                    margin: 0 auto 5px 5px;
+                    border-width: thin;
+                    border-style: dashed;
+                }
+            }
         }
-      }
+
+        .droppables-container {
+            position: relative;
+            display: inline-block;
+            float: left;
+            margin: 40px 0 5px;
+            vertical-align: top;
+
+            .droppable-item-container {
+                position: relative;
+                float: left;
+
+                .droppable-item-title {
+                    font-size: 20px;
+                    font-weight: 600;
+                    line-height: 35px;
+                    height: 35px;
+                    margin: 0 0 5px 5px;
+                    padding: 5px 0 5px 0;
+                    text-align: center;
+                    border: 1px solid #dcddde;
+                    background-color: @white;
+                    font-color: #102a3e;
+                }
+
+                .droppable-item {
+                    display: block;
+                    margin: 0 auto 2px 5px;
+                    border-width: thin;
+                    border-style: dashed;
+                }
+            }
+        }
+
+        .draggable-item {
+            display: block;
+            width: inherit;
+            height: inherit;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            text-decoration: none;
+            color: #000;
+
+            .no-touch &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .dragAndDrop-dummy {
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            display: block;
+            cursor: pointer;
+        }
     }
-  }
+
+    .dragAndDrop-widget {
+        position: relative;
+        display: inline-block;
+
+        &.show-user-answer {
+            .incorrect {
+                border-style: solid;
+                border-color: @red;
+            }
+
+            .correct {
+                border-style: solid;
+                border-color: @green;
+            }
+        }
+
+        &.show-correct-answer {
+            .droppable-item {
+                border-style: solid;
+                border-color: @green;
+            }
+        }
+
+        &.disabled {
+            .draggable-item {
+                .no-touch &:hover {
+                    cursor: default;
+                }
+            }
+        }
+    }
 }

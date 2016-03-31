@@ -1,72 +1,69 @@
 {
-  "_id":"c-150",
-  "_parentId":"b-85",
-  "_type":"component",
-  "_component":"dragAndDrop",
-  "_classes":"",
-  "_layout":"full",
+  "_id": "c-150",
+  "_parentId": "b-85",
+  "_type": "component",
+  "_component": "dragAndDrop",
+  "_classes": "",
+  "_layout": "full",
   "_attempts": 2,
+  "_shouldDisplayAttempts": false,
   "_questionWeight": 1,
   "_isRandom": true,
+  "_canShowModelAnswer": true,
+  "_recordInteraction": false,
   "title": "Basic Drag and Drop Component",
   "displayTitle": "Basic Drag and Drop Component",
   "body": "This is a basic drag and drop question component.",
   "instruction": "",
-  "_defaultMaxWidth": 120,
+  "_defaultWidth": 120,
   "_defaultHeight": 120,
   "_draggableItems": [
     {
       "id": "drag-01",
+      "title": "",
       "body": "<img src='course/en/images/number1.jpg'>"
     },
     {
       "id": "drag-02",
+      "title": "",
       "body": "<img src='course/en/images/number2.jpg'>"
     },
     {
       "id": "drag-03",
+      "title": "",
       "body": "<img src='course/en/images/number3.jpg'>"
     }
   ],
   "_droppableItems": [
     {
       "id": "drop-01",
+      "title": "John",
       "body": "First",
       "correctItemId": "drag-01"
     },
     {
       "id": "drop-02",
+      "title": "Jenny",
       "body": "Second",
       "correctItemId": "drag-02"
     },
     {
       "id": "drop-03",
+      "title": "Jasmin",
       "body": "Three",
       "correctItemId": "drag-03"
     }
   ],
   "_feedback": {
-    "correct": {
-      "title": "Congratulations!",
-      "body": "This is my long feedback"
-    },
+    "correct": "Congratulations, this is the correct feedback.",
     "_incorrect": {
-      "notFinal": {
-        "title": "Incorrect!  Try again."
-      },
-      "final": {
-        "title": "Incorrect!  No more tries."
-      }
+      "notFinal": "",
+      "final": "This feedback will appear if you answered the question incorrectly."
     },
     "_partlyCorrect": {
-      "notFinal": {
-        "title": "Partially correct!  Try again."
-      },
-      "final": {
-        "title": "Partially correct!  No more tries."
-      }
-    },
-    "body": "This should show for final incorrect and final partially correct, but it shouldn't for correct because correct has its own body attribute defined or not blank.."
+      "notFinal": "",
+      "final": "This feedback will appear if you answered the question correctly."
+    }
   },
   "_buttons": {
     "_submit": {
@@ -90,8 +87,7 @@
       "ariaLabel": ""
     },
     "remainingAttemptsText": "attempts remaining",
-    "remainingAttemptText": "final attempt",
-    "disabledAriaLabel": "This button is disabled at the moment"
+    "remainingAttemptText": "final attempt"
   },
   "_pageLevelProgress": {
     "_isEnabled": true
