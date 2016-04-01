@@ -8,7 +8,7 @@
   "authors": [
     "Himanshu Rajotia <himanshu.rajotia@exultcorp.com>"
   ],
-  "description": "A basic Adapt drag and drop component.",
+  "description": "A basic drag and drop question component.",
   "main": "/js/adapt-dragAndDrop.js",
   "displayName" : "Drag And Drop",
   "component" : "dragAndDrop",

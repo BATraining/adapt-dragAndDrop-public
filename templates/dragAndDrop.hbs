@@ -19,40 +19,62 @@
 <div class="dragAndDrop-inner component-inner" role="region" aria-label="{{_globals._components._dragAndDrop.ariaRegion}}" {{#if _globals._components._dragAndDrop.ariaRegion}}tabindex="0"{{/if}}>
     {{> component this}}
     <div class="dragAndDrop-widget component-widget {{#unless _isEnabled}} disabled {{#if _isInteractionComplete}} complete submitted show-user-answer {{#if _isCorrect}}correct{{/if}} {{/if}} {{/unless}}">
-        <div class="draggables-container">
+        <div class="dragAndDrop-container draggables-container{{#if _shouldScale}} scale{{/if}}">
             {{#each _draggableItems}}
-            <div class="draggable-item-container">
+            <div class="dragAndDrop-item-container draggable-item-container">
                 {{#if title}}
-                <div class="draggable-item-title">
-                    <div class="draggable-item-title-inner">
+                <div class="dragAndDrop-item-title draggable-item-title">
+                    <div class="dragAndDrop-item-title-inner draggable-item-title-inner">
                         {{{title}}}
                     </div>
                 </div>
                 {{/if}}
                 <div class="draggable-item-wrapper" style="width:{{../_defaultWidth}}px; height:{{../_defaultHeight}}px;" >
-                    <a href="#" class="draggable-item component-item component-item-color item-{{@index}}" data-id="{{id}}" index={{@index}}>
-                        <div class="draggable-item-body">
-                            {{{body}}}
+                    <a href="#" class="dragAndDrop-item draggable-item component-item component-item-color item-{{@index}}" data-id="{{id}}" index={{@index}}>
+                        {{#if body}}
+                        <div class="dragAndDrop-item-body draggable-item-body">
+                            <div class="dragAndDrop-item-body-inner draggable-item-body-inner">
+                                {{{body}}}
+                            </div>
                         </div>
+                        {{/if}}
+                        {{#if _graphic}}
+                        {{#if _graphic.src}}
+                        <div class="dragAndDrop-item-graphic draggable-item-graphic">
+                            <img src="{{_graphic.src}}" aria-label="{{_graphic.alt}}" tabindex="0">
+                        </div>
+                        {{/if}}
+                        {{/if}}
                     </a>
                 </div>
             </div>
             {{/each}}
         </div>
-        <div class="droppables-container">
+        <div class="dragAndDrop-container droppables-container{{#if _shouldScale}} scale{{/if}}">
             {{#each _droppableItems}}
-            <div class="droppable-item-container">
+            <div class="dragAndDrop-item-container droppable-item-container">
                 {{#if title}}
-                <div class="droppable-item-title">
-                    <div class="droppable-item-title-inner">
+                <div class="dragAndDrop-item-title droppable-item-title">
+                    <div class="dragAndDrop-item-title-inner droppable-item-title-inner">
                         {{{title}}}
                     </div>
                 </div>
                 {{/if}}
-                <div class="droppable-item {{#unless ../_isEnabled}} {{#if _isCorrect}} correct{{else}} incorrect{{/if}} {{/unless}}" style="width:{{../_defaultWidth}}px; height:{{../_defaultHeight}}px;" data-id="{{id}}" index={{@index}}>
-                    <div class="droppable-item-body">
-                        {{{body}}}
+                <div class="dragAndDrop-item droppable-item{{#unless ../_isEnabled}} {{#if _isCorrect}} correct{{else}} incorrect{{/if}} {{/unless}}" style="width:{{../_defaultWidth}}px; height:{{../_defaultHeight}}px;" data-id="{{id}}" index={{@index}}>
+                    {{#if body}}
+                    <div class="dragAndDrop-item-body droppable-item-body">
+                        <div class="dragAndDrop-item-body-inner droppable-item-body-inner">
+                            {{{body}}}
+                        </div>
                     </div>
+                    {{/if}}
+                    {{#if _graphic}}
+                    {{#if _graphic.src}}
+                    <div class="dragAndDrop-item-graphic droppable-item-graphic">
+                        <img src="{{_graphic.src}}" aria-label="{{_graphic.alt}}" tabindex="0">
+                    </div>
+                    {{/if}}
+                    {{/if}}
                 </div>
             </div>
             {{/each}}

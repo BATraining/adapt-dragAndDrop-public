@@ -18,49 +18,63 @@
  */
 .dragAndDrop-component {
     .dragAndDrop-inner {
-        .draggables-container {
+
+        .dragAndDrop-container {
             display: inline-block;
             vertical-align: top;
 
-            .draggable-item-container {
-                position: relative;
-                float: left;
+            &.scale {
+                transform-origin: 0 0%;
+                -ms-transform-origin: 0 0%;
+                -moz-transform-origin: 0 0%;
+                -o-transform-origin: 0 0%;
+                -webkit-transform-origin: 0 0%;
+            }
 
-                .draggable-item-title {
-                    font-size: 20px;
-                    font-weight: 600;
-                    line-height: 35px;
-                    height: 35px;
-                    margin: 0 0 5px 5px;
-                    padding: 5px 0 5px 0;
-                    text-align: center;
-                    border: 1px solid #dcddde;
-                    background-color: @white;
-                    font-color: #102a3e;
-                }
-
+            &.draggables-container {
                 .draggable-item-wrapper {
                     position: relative;
                     display: block;
                     margin: 0 auto 5px 5px;
-                    border-width: thin;
+                    border-width: 1px;
+                    border-style: dashed;
+
+                    .draggable-item {
+                        display: block;
+                        width: inherit;
+                        height: inherit;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                        text-decoration: none;
+                        color: @black;
+
+                        .no-touch &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+
+            &.droppables-container {
+                display: inline-block;
+                float: left;
+                margin: 40px 0 5px;
+
+                .droppable-item {
+                    display: block;
+                    margin: 0 auto 2px 5px;
+                    border-width: 1px;
                     border-style: dashed;
                 }
             }
-        }
 
-        .droppables-container {
-            position: relative;
-            display: inline-block;
-            float: left;
-            margin: 40px 0 5px;
-            vertical-align: top;
-
-            .droppable-item-container {
+            .dragAndDrop-item-container {
                 position: relative;
                 float: left;
 
-                .droppable-item-title {
+                .dragAndDrop-item-title {
                     font-size: 20px;
                     font-weight: 600;
                     line-height: 35px;
@@ -72,29 +86,6 @@
                     background-color: @white;
                     font-color: #102a3e;
                 }
-
-                .droppable-item {
-                    display: block;
-                    margin: 0 auto 2px 5px;
-                    border-width: thin;
-                    border-style: dashed;
-                }
-            }
-        }
-
-        .draggable-item {
-            display: block;
-            width: inherit;
-            height: inherit;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            text-decoration: none;
-            color: #000;
-
-            .no-touch &:hover {
-                cursor: pointer;
             }
         }
 

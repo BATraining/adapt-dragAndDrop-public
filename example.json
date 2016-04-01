@@ -17,21 +17,34 @@
   "instruction": "",
   "_defaultWidth": 120,
   "_defaultHeight": 120,
+  "_shouldScale": false,
   "_draggableItems": [
     {
       "id": "drag-01",
-      "title": "",
-      "body": "<img src='course/en/images/number1.jpg'>"
+      "title": "A",
+      "body": "",
+      "_graphic": {
+        "src": "course/en/images/number1.jpg",
+        "alt": "One"
+      }
     },
     {
       "id": "drag-02",
-      "title": "",
-      "body": "<img src='course/en/images/number2.jpg'>"
+      "title": "B",
+      "body": "",
+      "_graphic": {
+        "src": "course/en/images/number2.jpg",
+        "alt": "Two"
+      }
     },
     {
       "id": "drag-03",
-      "title": "",
-      "body": "<img src='course/en/images/number3.jpg'>"
+      "title": "C",
+      "body": "",
+      "_graphic": {
+        "src": "course/en/images/number3.jpg",
+        "alt": "Three"
+      }
     }
   ],
   "_droppableItems": [
@@ -39,18 +52,30 @@
       "id": "drop-01",
       "title": "John",
       "body": "First",
+      "_graphic": {
+        "src": "",
+        "alt": ""
+      },
       "correctItemId": "drag-01"
     },
     {
       "id": "drop-02",
       "title": "Jenny",
       "body": "Second",
+      "_graphic": {
+        "src": "",
+        "alt": ""
+      },
       "correctItemId": "drag-02"
     },
     {
       "id": "drop-03",
       "title": "Jasmin",
       "body": "Three",
+      "_graphic": {
+        "src": "",
+        "alt": ""
+      },
       "correctItemId": "drag-03"
     }
   ],
