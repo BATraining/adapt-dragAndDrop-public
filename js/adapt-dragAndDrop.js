@@ -56,9 +56,11 @@ define([
         setupQuestion: function() {
             this.listenTo(Adapt, 'device:changed', this.reRender, this);
 
-            this.setupRandomisation();
+            if(this.model.get("_shouldScale")) {
+                this.listenTo(Adapt, 'device:resize', this.resizeItems, 200);
+            }
 
-            this.addTitleToDraggables();
+            this.setupRandomisation();
         },
 
          setupRandomisation: function() {
@@ -71,16 +73,6 @@ define([
             }
         },
 
-        addTitleToDraggables: function() {
-            var i = 65;
-            _.each(this.model.get('_draggableItems'), function(item, index) {
-                if(!item.title) {
-                    item.title = String.fromCharCode(i);
-                }
-                i++;
-            }, this);
-        },
-
         onQuestionRendered: function() {
             if (this.$('.dragAndDrop-widget').find('img').length !== 0) {
                 this.$('.dragAndDrop-widget').imageready(_.bind(function() {
@@ -88,6 +80,10 @@ define([
                 }, this));
             } else {
                 this.setReadyStatus();
+            }
+
+            if(this.model.get("_shouldScale")) {
+                this.resizeItems();
             }
 
             this.model.set('_initialDragAndDropWidgetView', this.$('.dragAndDrop-widget').html());
@@ -103,29 +99,61 @@ define([
             if (!Adapt.componentStore.objectMatching) throw "Object Matching not included in build";
             var ObjectMatching = Adapt.componentStore.objectMatching;
 
-            var $container = $(".component-container", $("." + this.model.get("_parentId")));
             var model = this.prepareObjectMatchingModel();
             var newObjectMatching = new ObjectMatching({model: model});
+            var $container = $(".component-container", $("." + this.model.get("_parentId")));
+
             newObjectMatching.reRender();
             if (model.get('_initialObjectMatchingWidgetView')) {
                 newObjectMatching.$el.find('.objectMatching-widget').html(model.get('_initialObjectMatchingWidgetView'));
             }
+            if(model.get('_isSubmitted')) {
+                newObjectMatching.showMarking();
+            }
+
             newObjectMatching.setupObjectMatching();
             $container.append(newObjectMatching.$el);
-            Adapt.trigger('device:resize');
 
-            _.defer(_.bind(function() {
+            Adapt.trigger('device:resize');
+            _.defer(_.bind(function () {
                 this.remove();
             }, this));
-            //this.remove();
         },
 
         prepareObjectMatchingModel: function() {
             var model = this.model;
             model.set('_component', 'objectMatching');
             model.set('_wasDragAndDrop', true);
-
             return model;
+        },
+
+        resizeItems: function() {
+            if(this.model.get("_shouldScale")) {
+                var totalItems = this.model.get('_draggableItems').length;
+                var draggableItemWidth = this.$('.draggable-item-container').width();
+                var draggableItemHeight = this.$('.draggable-item-container').height();
+                var width = this.$('.dragAndDrop-inner').width() / totalItems;
+                var scale = width / draggableItemWidth;
+
+                if(scale > 1) {
+                    scale = 1;
+                }
+
+                var $dragContainers = this.$('.draggables-container, .droppables-container');
+                $dragContainers.css({
+                    '-ms-transform': 'scale(' + scale + ')',
+                    '-moz-transform': 'scale(' + scale + ')',
+                    '-webkit-transform': 'scale(' + scale + ')',
+                    '-webkit-transform-style': 'preserve-3d',
+                    '-webkit-transform': 'scale3d(' + scale + ',' + scale + ',' + scale + ')',
+                    'transform': 'scale(' + scale + ')'
+                });
+                $dragContainers.height(draggableItemHeight * scale);
+
+                this.$('.dragAndDrop-widget').width(draggableItemWidth * totalItems);
+
+                this.scale = scale;
+            }
         },
 
         onClickDragItem: function(event) {

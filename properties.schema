@@ -91,6 +91,15 @@
       "validators": ["number", "required"],
       "help": "Default height of an item"
     },
+    "_shouldScale": {
+      "type":"boolean",
+      "required":false,
+      "default": false,
+      "title": "Should scale",
+      "inputType": {"type": "Boolean", "options": [true, false]},
+      "validators": [],
+      "help": "Select 'true' to scale container based on number of draggable items it contains."
+    },
     "_draggableItems": {
       "type":"array",
       "required":true,
@@ -119,12 +128,35 @@
           },
           "body": {
             "type":"string",
-            "required": true,
+            "required": false,
             "default": "",
             "title": "Draggable item body text",
             "inputType": "TextArea",
-            "validators": ["required"],
-            "help": "we can also use html tags here."
+            "validators": [],
+            "help": "Optional text which will be rendered with the item body."
+          },
+          "_graphic": {
+            "type": "object",
+            "required": false,
+            "title": "Graphic",
+            "properties":{
+              "alt": {
+                "type": "string",
+                "required": false,
+                "default": "",
+                "inputType": "Text",
+                "validators": [],
+                "help": "The alternative text for this image"
+              },
+              "src": {
+                "type": "string",
+                "required": false,
+                "default": "",
+                "inputType": "Asset:image",
+                "validators": [],
+                "help": "Optional image which will be rendered with the item body"
+              }
+            }
           }
         }
       }
@@ -162,7 +194,30 @@
             "title": "Body text that goes inside the droppable area",
             "inputType": "TextArea",
             "validators": ["required"],
-            "help": "we can also use html tags here."
+            "help": "Optional text which will be rendered with the item body."
+          },
+          "_graphic": {
+            "type": "object",
+            "required": false,
+            "title": "Graphic",
+            "properties":{
+              "alt": {
+                "type": "string",
+                "required": false,
+                "default": "",
+                "inputType": "Text",
+                "validators": [],
+                "help": "The alternative text for this image"
+              },
+              "src": {
+                "type": "string",
+                "required": false,
+                "default": "",
+                "inputType": "Asset:image",
+                "validators": [],
+                "help": "Optional image which will be rendered with the item body"
+              }
+            }
           },
           "correctItemId": {
             "type":"string",
