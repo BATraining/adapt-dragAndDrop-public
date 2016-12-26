@@ -45,26 +45,15 @@
       "correctItemId": "drag-03"
     }
   ],
-  "_feedback": {
-    "correct": {
-      "title": "Congratulations!",
-      "body": "This is my long feedback"
-    },
+  "_feedback":{
+    "correct":"Congratulations, this is the correct feedback.",
     "_incorrect": {
-      "notFinal": {
-        "title": "Incorrect!  Try again."
-      },
-      "final": {
-        "title": "Incorrect!  No more tries."
-      }
+      "notFinal": "",
+      "final": "This feedback will appear if you answered the question incorrectly."
     },
     "_partlyCorrect": {
-      "notFinal": {
-        "title": "Partially correct!  Try again."
-      },
-      "final": {
-        "title": "Partially correct!  No more tries."
-      }
+      "notFinal": "",
+      "final": "This feedback will appear if you answered the question correctly."
     },
     "body": "This should show for final incorrect and final partially correct, but it shouldn't for correct because correct has its own body attribute defined or not blank.."
   },
